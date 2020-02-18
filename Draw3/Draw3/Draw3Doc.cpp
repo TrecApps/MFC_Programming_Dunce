@@ -71,6 +71,13 @@ CDraw3Doc::CDraw3Doc() noexcept
 
 CDraw3Doc::~CDraw3Doc()
 {
+	// Since we create these Format objects, we need to release them when we're done!
+	for (UINT Rust = 0; Rust < text.GetSize(); Rust++)
+	{
+		if (text[Rust].format)
+			text[Rust].format->Release();
+		text[Rust].format = nullptr;
+	}
 }
 
 BOOL CDraw3Doc::OnNewDocument()
@@ -157,7 +164,7 @@ void CDraw3Doc::SetSearchContent(const CString& value)
 
 #endif // SHARED_HANDLERS
 
-
+// Called to ensure that we get a reference to the window object that holds our ribbon
 void CDraw3Doc::InitializeWindow()
 {
 	if(!window)
@@ -228,8 +235,11 @@ int CDraw3Doc::GetCurrentThickness()
 }
 
 // CDraw3Doc commands
+// Note: These commands are event handlers applied to various controls in our MFC Ribbon
+//	In Draw2, commands related to text did not exist and functionality that did was done in a CDialog 
 
 
+// Button that tells us to set the mode to star
 void CDraw3Doc::OnButtonStar()
 {
 	InitializeWindow();
@@ -237,7 +247,7 @@ void CDraw3Doc::OnButtonStar()
 	currentShape = star;
 }
 
-
+// Button that tells us to set the mode to square
 void CDraw3Doc::OnButtonSquare()
 {
 	InitializeWindow();
@@ -245,7 +255,7 @@ void CDraw3Doc::OnButtonSquare()
 	currentShape = square;
 }
 
-
+// Button that tells us to set the mode to circle (forgot to rename EventHandler)
 void CDraw3Doc::OnButton4()
 {
 	InitializeWindow();
@@ -253,27 +263,39 @@ void CDraw3Doc::OnButton4()
 	currentShape = circle;
 }
 
-
+// Handler to set the size of the object
 void CDraw3Doc::OnSpinSize()
 {
 	InitializeWindow();
 
+	// Since we need to retrieve a value from a control, we need to ensure that we got that
+	// window that holds the control. If we don't, no point in continuing.
 	if (!window)
 		return;
 
+	// Get the ribbon from the window.
+	// Note the use of "auto" to make the IDE/Compiler deduce the type.
+	// Useful, as it saves a lot of typing
 	auto ribbon = window->GetRibbon();
 
+	// Get the Category. In this method, it will be the first tab 
 	auto cat = ribbon->GetActiveCategory();
 
+	// Since the button that calls this method is in the second panel (index starts at 0), 
+	// Retrieve the panel at index 1
 	auto pan = cat->GetPanel(1);
 
+	// In that panel, the control that calls this method is the first one
 	auto button = pan->GetElement(0);
 
+	// Cast it as an Edit control in order to access edit specific functionality
+	// If the object is not the target type, pointer will be null
 	auto edit = dynamic_cast<CMFCRibbonEdit*>(button);
 
 	if (!edit)
 		return;
 
+	// Capture the edit text into a CString
 	CString num(edit->GetEditText());
 
 	currentSize = _wtoi(num);

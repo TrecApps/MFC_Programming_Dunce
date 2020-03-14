@@ -125,13 +125,13 @@ public:
 	afx_msg void OnButton4();
 	afx_msg void OnSpinSize();
 	afx_msg void OnSpinThickness();
-	afx_msg void OnButtonInnerColor();
-	afx_msg void OnButtonOuterColor();
 	afx_msg void OnComboFont();
 	afx_msg void OnComboFontSize();
 	afx_msg void OnButtonFontColor();
 	afx_msg void OnSpinTextWidth();
 	afx_msg void OnSpinTextHeight();
+	afx_msg void OnButtonInnerColor();
+	afx_msg void OnButtonOuterColor();
 };
 
 D2D1_COLOR_F Get2DColorFromMFCColor(COLORREF c);

@@ -184,7 +184,6 @@ protected:
 
 // Implementation
 protected:
-	DECLARE_MESSAGE_MAP()
 public:
 
 };
@@ -198,9 +197,6 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
-
-END_MESSAGE_MAP()
 
 // App command to run the dialog
 void CDraw3App::OnAppAbout()
@@ -232,4 +228,5 @@ void CDraw3App::SaveCustomState()
 }
 
 // CDraw3App message handlers
+
 

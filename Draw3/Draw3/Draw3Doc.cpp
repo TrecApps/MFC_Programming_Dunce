@@ -38,13 +38,13 @@ BEGIN_MESSAGE_MAP(CDraw3Doc, CDocument)
 	ON_COMMAND(ID_BUTTON4, &CDraw3Doc::OnButton4)
 	ON_COMMAND(ID_SPIN5, &CDraw3Doc::OnSpinSize)
 	ON_COMMAND(ID_SPIN6, &CDraw3Doc::OnSpinThickness)
-	ON_COMMAND(ID_BUTTON5, &CDraw3Doc::OnButtonInnerColor)
-	ON_COMMAND(ID_BUTTON6, &CDraw3Doc::OnButtonOuterColor)
 	ON_COMMAND(ID_COMBO3, &CDraw3Doc::OnComboFont)
 	ON_COMMAND(ID_COMBO4, &CDraw3Doc::OnComboFontSize)
 	ON_COMMAND(ID_BUTTON7, &CDraw3Doc::OnButtonFontColor)
 	ON_COMMAND(ID_SPIN3, &CDraw3Doc::OnSpinTextWidth)
 	ON_COMMAND(ID_SPIN4, &CDraw3Doc::OnSpinTextHeight)
+	ON_COMMAND(ID_BUTTON8, &CDraw3Doc::OnButtonInnerColor)
+	ON_COMMAND(ID_BUTTON9, &CDraw3Doc::OnButtonOuterColor)
 END_MESSAGE_MAP()
 
 
@@ -307,55 +307,7 @@ void CDraw3Doc::OnSpinThickness()
 }
 
 
-void CDraw3Doc::OnButtonInnerColor()
-{
-	InitializeWindow();
 
-	if (!window)
-		return;
-
-	auto ribbon = window->GetRibbon();
-
-	auto cat = ribbon->GetActiveCategory();
-
-	auto pan = cat->GetPanel(2);
-
-	auto button = pan->GetElement(0);
-
-	auto edit = dynamic_cast<CMFCRibbonColorButton*>(button);
-
-	if (!edit)
-		return;
-
-	in_color = Get2DColorFromMFCColor(edit->GetColor());
-	
-}
-
-
-void CDraw3Doc::OnButtonOuterColor()
-{
-	InitializeWindow();
-
-	InitializeWindow();
-
-	if (!window)
-		return;
-
-	auto ribbon = window->GetRibbon();
-
-	auto cat = ribbon->GetActiveCategory();
-
-	auto pan = cat->GetPanel(2);
-
-	auto button = pan->GetElement(1);
-
-	auto edit = dynamic_cast<CMFCRibbonColorButton*>(button);
-
-	if (!edit)
-		return;
-
-	color = Get2DColorFromMFCColor(edit->GetColor());
-}
 
 
 void CDraw3Doc::OnComboFont()
@@ -442,7 +394,7 @@ void CDraw3Doc::OnSpinTextWidth()
 
 	auto cat = ribbon->GetActiveCategory();
 
-	auto pan = cat->GetPanel(0);
+	auto pan = cat->GetPanel(1);
 
 	auto button = pan->GetElement(0);
 
@@ -466,7 +418,7 @@ void CDraw3Doc::OnSpinTextHeight()
 
 	auto cat = ribbon->GetActiveCategory();
 
-	auto pan = cat->GetPanel(0);
+	auto pan = cat->GetPanel(1);
 
 	auto button = pan->GetElement(1);
 
@@ -485,4 +437,52 @@ D2D1_COLOR_F Get2DColorFromMFCColor(COLORREF c)
 		static_cast<float>(GetGValue(c)) / 255.0f,
 		static_cast<float>(GetBValue(c)) / 255.0f,
 		1.0f};
+}
+
+
+void CDraw3Doc::OnButtonInnerColor()
+{
+	InitializeWindow();
+
+	if (!window)
+		return;
+
+	auto ribbon = window->GetRibbon();
+
+	auto cat = ribbon->GetActiveCategory();
+
+	auto pan = cat->GetPanel(2);
+
+	auto button = pan->GetElement(0);
+
+	auto edit = dynamic_cast<CMFCRibbonColorButton*>(button);
+
+	if (!edit)
+		return;
+
+	in_color = Get2DColorFromMFCColor(edit->GetColor());
+}
+
+
+void CDraw3Doc::OnButtonOuterColor()
+{
+	InitializeWindow();
+
+	if (!window)
+		return;
+
+	auto ribbon = window->GetRibbon();
+
+	auto cat = ribbon->GetActiveCategory();
+
+	auto pan = cat->GetPanel(2);
+
+	auto button = pan->GetElement(1);
+
+	auto edit = dynamic_cast<CMFCRibbonColorButton*>(button);
+
+	if (!edit)
+		return;
+
+	color = Get2DColorFromMFCColor(edit->GetColor());
 }

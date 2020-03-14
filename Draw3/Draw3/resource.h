@@ -94,9 +94,6 @@
 #define ID_BUTTON2                      32771
 #define ID_BUTTON3                      32772
 #define ID_BUTTON4                      32773
-#define ID_SLIDER2                      32775
-#define ID_BUTTON5                      32778
-#define ID_BUTTON6                      32779
 #define ID_COMBO3                       32780
 #define ID_COMBO4                       32781
 #define ID_BUTTON7                      32782
@@ -104,13 +101,15 @@
 #define ID_SPIN4                        32788
 #define ID_SPIN5                        32789
 #define ID_SPIN6                        32790
+#define ID_BUTTON8                      32792
+#define ID_BUTTON9                      32793
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32791
+#define _APS_NEXT_COMMAND_VALUE         32794
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

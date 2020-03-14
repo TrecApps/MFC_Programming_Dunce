@@ -19,6 +19,8 @@
 #include <dwrite.h>
 #include <atltypes.h>
 #include "MainFrm.h"
+
+// marks the shape of a given object
 typedef enum shape
 {
 	star,     // From previous Project
@@ -26,6 +28,8 @@ typedef enum shape
 	circle
 }shape;
 
+// Represents an object to draw
+// From Draw2
 typedef struct DrawElement
 {
 	CPoint point;
@@ -36,6 +40,8 @@ typedef struct DrawElement
 	
 }DrawElement; // Replaces PointColor from previous Project
 
+// Represents text objects in our application
+// Introduced in this project
 typedef struct DrawTextElement
 {
 	CRect location;

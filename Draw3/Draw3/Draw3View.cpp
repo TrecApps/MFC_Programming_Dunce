@@ -47,8 +47,8 @@ END_MESSAGE_MAP()
 
 CDraw3View::CDraw3View() noexcept
 {
-	// TODO: add construction code here
-		// TODO: add construction code here
+	// Null these Direct2D objects so that if creation fails,
+	// we don't accidentaly use them
 	d_factory = nullptr;
 	d_renderer = nullptr;
 	d_border = d_content = d_text = nullptr;
@@ -78,6 +78,7 @@ CDraw3View::CDraw3View() noexcept
 	if (FAILED(hr))
 		return;
 
+	// Introduced in Draw3 for Text Support
 	hr = DWriteCreateFactory(
 		DWRITE_FACTORY_TYPE_SHARED,
 		__uuidof(IDWriteFactory),
@@ -145,17 +146,18 @@ void CDraw3View::OnDraw(CDC* pDC)
 	if (!bound)
 		return;
 
+	// MFC-based procedure to retrieve our data
 	CDraw3Doc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc || !pDC)
 		return;
 
+	// Get the data
 	CArray<DrawElement >* points = pDoc->GetPoints();
 	if (!points)
 		return;
 
 	d_renderer->BeginDraw();
-	//d_renderer->BeginDraw();
 	drawClear = false;
 	d_renderer->Clear(D2D1::ColorF(D2D1::ColorF::White));
 
@@ -209,6 +211,8 @@ void CDraw3View::OnDraw(CDC* pDC)
 	for (UINT rust = 0; rust < tPoints->GetCount(); rust++)
 	{
 		DrawTextElement* curTextEle = &tPoints->ElementAt(rust);
+
+		// Make sure we have an object and that object has an active format object
 		if (curTextEle && curTextEle->format)
 		{
 			D2D1_RECT_F location;
@@ -276,12 +280,20 @@ void CDraw3View::OnRButtonUp(UINT /* nFlags */, CPoint point)
 
 void CDraw3View::OnLButtonUp(UINT nFlags, CPoint point)
 {
+	// Since we use the active category in the ribbon to decide
+	// Whether we are adding an object or setting up a text object
+
+	// Regardless, tell the app that we aren't setting a text element up. That way,
+	// if we are, we can reset it after this method
 	currentTextElement = nullptr;
 
+	// Get the Window (should do null check)
 	CMainFrame* window = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
 
+	// Get the ribbon from the window
 	auto ribbon = window->GetRibbon();
 
+	// Get the category, which will determine the mode our click will go in
 	auto cat = ribbon->GetActiveCategory();
 
 	CString category(cat->GetName());
